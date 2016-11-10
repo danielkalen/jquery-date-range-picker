@@ -57,24 +57,19 @@
 		}
 	};
 
-	$.fn.dateRangePicker = function(opt)
-	{
+	$.fn.dateRangePicker = function(opt){
 		if (!opt) opt = {};
-		opt = $.extend(true,
-		{
+		opt = $.extend(true, {
 			autoClose: false,
 			format: 'YYYY-MM-DD',
 			separator: ' to ',
 			language: 'auto',
 			startOfWeek: 'sunday',// or monday
-			getValue: function()
-			{
+			getValue: function(){
 				return $(this).val();
 			},
-			setValue: function(s)
-			{
-				if(!$(this).attr('readonly') && !$(this).is(':disabled') && s != $(this).val())
-				{
+			setValue: function(s){
+				if(!$(this).attr('readonly') && !$(this).is(':disabled') && s != $(this).val()) {
 					$(this).val(s);
 				}
 			},
@@ -86,13 +81,7 @@
 			minDays: 0,
 			maxDays: 0,
 			showShortcuts: false,
-			shortcuts:
-			{
-				//'prev-days': [1,3,5,7],
-				// 'next-days': [3,5,7],
-				//'prev' : ['week','month','year'],
-				// 'next' : ['week','month','year']
-			},
+			shortcuts:{},
 			customShortcuts : [],
 			inline:false,
 			container:'body',
@@ -108,22 +97,20 @@
 			selectBackward: false,
 			applyBtnClass: '',
 			singleMonth: 'auto',
-			hoveringTooltip: function(days, startTime, hoveringTime)
-			{
+			hoveringTooltip: function(days, startTime, hoveringTime){
 				return days > 1 ? days + ' ' + lang('days') : '';
 			},
 			showTopbar: true,
 			swapTime: false,
 			showWeekNumbers: false,
-			getWeekNumber: function(date) //date will be the first day of a week
-			{
+			getWeekNumber: function(date){ //date will be the first day of a week
 				return moment(date).format('w');
 			},
 			customOpenAnimation: null,
 			customCloseAnimation: null,
             customArrowPrevSymbol: null,
             customArrowNextSymbol: null
-		},opt);
+		}, opt);
 
 		opt.start = false;
 		opt.end = false;
@@ -152,36 +139,28 @@
 		var selfDom = $(self).get(0);
 		var domChangeTimer;
 
-		$(this).unbind('.datepicker').bind('click.datepicker',function(evt)
-		{
+		$(this).unbind('.datepicker').bind('click.datepicker',function(evt){
 			var isOpen = box.is(':visible');
 			if(!isOpen) open(opt.duration);
-		}).bind('change.datepicker', function(evt)
-		{
+		}).bind('change.datepicker', function(evt){
 			checkAndSetDefaultValue();
-		}).bind('keyup.datepicker',function()
-		{
+		}).bind('keyup.datepicker',function(){
 			try{ clearTimeout(domChangeTimer); }catch(e){}
-			domChangeTimer = setTimeout(function()
-			{
+			domChangeTimer = setTimeout(function(){
 				checkAndSetDefaultValue();
 			},2000);
 		});
 
 		init_datepicker.call(this);
 
-		if (opt.alwaysOpen)
-		{
+		if (opt.alwaysOpen){
 			open(0);
 		}
 
 		// expose some api
-		$(this).data('dateRangePicker',
-		{
-			setStart: function(d1)
-			{
-				if (typeof d1 == 'string')
-				{
+		$(this).data('dateRangePicker',{
+			setStart: function(d1){
+				if (typeof d1 == 'string'){
 					d1 = moment(d1,opt.format).toDate();
 				}
 
@@ -190,21 +169,17 @@
 
 				return this;
 			},
-			setEnd: function(d2, silent)
-			{
+			setEnd: function(d2, silent){
 				var start = new Date();
 				start.setTime(opt.start);
-				if (typeof d2 == 'string')
-				{
+				if (typeof d2 == 'string'){
 					d2 = moment(d2,opt.format).toDate();
 				}
 				setDateRange(start, d2, silent);
 				return this;
 			},
-			setDateRange : function(d1,d2,silent)
-			{
-				if (typeof d1 == 'string' && typeof d2 == 'string')
-				{
+			setDateRange : function(d1,d2,silent){
+				if (typeof d1 == 'string' && typeof d2 == 'string'){
 					d1 = moment(d1,opt.format).toDate();
 					d2 = moment(d2,opt.format).toDate();
 				}
@@ -213,11 +188,11 @@
 			clear: clearSelection,
 			close: closeDatePicker,
 			open: open,
+			opts: opt,
 			redraw: redrawDatePicker,
 			getDatePicker: getDatePicker,
 			resetMonthsView: resetMonthsView,
-			destroy: function()
-			{
+			destroy: function(){
 				$(self).unbind('.datepicker');
 				$(self).data('dateRangePicker','');
 				$(self).data('date-picker-opened',null);
